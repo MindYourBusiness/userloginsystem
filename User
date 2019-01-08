@@ -1,0 +1,82 @@
+public class User implements Comparable<User> {
+
+    private String Name;
+    private String SirName;
+    private String Password;
+    private Integer userID;
+    private static Integer ID = 1;
+
+    User(String Name, String SirName, String Password) throws Exception {
+        this.Name = Name;
+        this.SirName = SirName;
+
+        if (passwordCheck(Password) != null){
+            this.Password =  Password;
+        } else {
+            System.out.println("Ошибка в создании экземпляра ");
+            throw new Exception();
+        }
+
+        this.userID = ID++;
+    }
+
+
+    public void setUserPassword(String oldPassword, String newPassword) {
+        if (Password.equals(oldPassword)) {
+            if (passwordCheck(newPassword) != null){
+                Password = newPassword;
+                System.out.println("Пароль успешно сменен! ");
+            }else System.out.println("Пароль не изменен! ");
+        }else {
+            System.out.println("Пароли не совпадают! ");
+        }
+    }
+
+    static private String passwordCheck(String password){
+        int minlength = 8;
+        int minDigit = 2;
+        int minUpper = 1;
+
+        int countDigit = 0;
+        int countUpper = 0;
+
+        for (int i = 0; i < password.length(); i++) {
+            char a = password.charAt(i);
+            if (Character.isDigit(a)) {
+                countDigit++;
+            }
+            if (Character.isUpperCase(a)) {
+                countUpper++;
+            }
+        }
+
+
+        if (password.length() <= minlength){
+            System.out.println("Слишком короткий пароль! ");
+        }if ( countDigit < minDigit){
+            System.out.println("Не достаточное количество чисел! ");
+        }if (countUpper < minUpper){
+            System.out.println("Отсутствуют буквы верхнего регистра! ");
+
+
+        }if (countDigit >= minDigit && countUpper >= minUpper && password.length() >= minlength) {
+            System.out.println("Пароль успешно установлен! ");
+            return password;
+        }else {
+            System.out.println("Пароль некорректен! ");
+            return null;
+        }
+    }
+
+    @Override
+    public int compareTo(User usr) {
+        int a = (this.userID - usr.userID);
+        return a;
+    }
+
+    @Override
+    public String toString() {
+        return Name + " " + SirName + " " + Password + " " + userID.toString();
+    }
+
+}
